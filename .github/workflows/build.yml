@@ -19,6 +19,11 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
 
+      - name: Download AbsoluteLayout JAR
+        run: |
+          mkdir -p MessageNetSMS/libs
+          wget -q "https://github.com/sayems/java.libs/raw/master/AbsoluteLayout.jar" -O MessageNetSMS/libs/AbsoluteLayout.jar
+
       - name: Build fat JAR with Maven
         working-directory: MessageNetSMS
         run: mvn package -q
