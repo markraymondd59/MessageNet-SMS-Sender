@@ -1,0 +1,83 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Build fat JAR with Maven
+        working-directory: MessageNetSMS
+        run: mvn package -q
+
+      - name: Install Launch4j
+        run: |
+          wget -q https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/launch4j-3.14-linux-x64.tgz/download -O launch4j.tgz
+          tar -xzf launch4j.tgz
+
+      - name: Create Launch4j config
+        run: |
+          cat > launch4j-config.xml << 'EOF'
+          <launch4jConfig>
+            <dontWrapJar>false</dontWrapJar>
+            <headerType>gui</headerType>
+            <jar>MessageNetSMS/target/MessageNetSMS-0.1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
+            <outfile>MessageNetSMS.exe</outfile>
+            <errTitle>MessageNet SMS Sender</errTitle>
+            <cmdLine></cmdLine>
+            <chdir>.</chdir>
+            <priority>normal</priority>
+            <downloadUrl>https://adoptium.net/</downloadUrl>
+            <supportUrl></supportUrl>
+            <stayAlive>false</stayAlive>
+            <restartOnCrash>false</restartOnCrash>
+            <manifest></manifest>
+            <icon></icon>
+            <jre>
+              <path></path>
+              <bundledJre64Bit>false</bundledJre64Bit>
+              <bundledJreAsFallback>false</bundledJreAsFallback>
+              <minVersion>1.8.0</minVersion>
+              <maxVersion></maxVersion>
+              <jdkPreference>preferJre</jdkPreference>
+              <runtimeBits>64/32</runtimeBits>
+            </jre>
+            <versionInfo>
+              <fileVersion>0.1.0.0</fileVersion>
+              <txtFileVersion>0.1.0</txtFileVersion>
+              <fileDescription>MessageNet SMS Sender</fileDescription>
+              <copyright>lightdestory</copyright>
+              <productVersion>0.1.0.0</productVersion>
+              <txtProductVersion>0.1.0</txtProductVersion>
+              <productName>MessageNet SMS Sender</productName>
+              <companyName></companyName>
+              <internalName>MessageNetSMS</internalName>
+              <originalFilename>MessageNetSMS.exe</originalFilename>
+              <trademarks></trademarks>
+              <language>ENGLISH_US</language>
+            </versionInfo>
+          </launch4jConfig>
+          EOF
+
+      - name: Build EXE with Launch4j
+        run: ./launch4j/launch4jc launch4j-config.xml
+
+      - name: Upload EXE as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MessageNetSMS-Windows-EXE
+          path: MessageNetSMS.exe
+          retention-days: 30
