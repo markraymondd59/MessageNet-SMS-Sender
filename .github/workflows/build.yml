@@ -30,7 +30,7 @@ jobs:
 
       - name: Create Launch4j config
         run: |
-          cat > launch4j-config.xml << 'EOF'
+          cat > launch4j-config.xml << 'XMLEOF'
           <launch4jConfig>
             <dontWrapJar>false</dontWrapJar>
             <headerType>gui</headerType>
@@ -59,7 +59,7 @@ jobs:
               <language>ENGLISH_US</language>
             </versionInfo>
           </launch4jConfig>
-          EOF
+          XMLEOF
 
       - name: Build EXE with Launch4j
         run: ./launch4j/launch4jc launch4j-config.xml
