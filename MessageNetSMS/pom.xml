@@ -46,7 +46,7 @@
             <dependency>
     <groupId>org.netbeans.external</groupId>
     <artifactId>AbsoluteLayout</artifactId>
-    <version>RELEASE82</version>
+    <version>RELEASE170</version>
     <scope>system</scope>
     <systemPath>${project.basedir}/libs/AbsoluteLayout.jar</systemPath>
 </dependency>
