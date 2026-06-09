@@ -19,11 +19,6 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
 
-      - name: Download AbsoluteLayout JAR
-        run: |
-          mkdir -p MessageNetSMS/libs
-          wget -q "https://github.com/sayems/java.libs/raw/master/AbsoluteLayout.jar" -O MessageNetSMS/libs/AbsoluteLayout.jar
-
       - name: Build fat JAR with Maven
         working-directory: MessageNetSMS
         run: mvn package -q
@@ -42,21 +37,12 @@ jobs:
             <jar>MessageNetSMS/target/MessageNetSMS-0.1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
             <outfile>MessageNetSMS.exe</outfile>
             <errTitle>MessageNet SMS Sender</errTitle>
-            <cmdLine></cmdLine>
-            <chdir>.</chdir>
             <priority>normal</priority>
             <downloadUrl>https://adoptium.net/</downloadUrl>
-            <supportUrl></supportUrl>
             <stayAlive>false</stayAlive>
             <restartOnCrash>false</restartOnCrash>
-            <manifest></manifest>
-            <icon></icon>
             <jre>
-              <path></path>
-              <bundledJre64Bit>false</bundledJre64Bit>
-              <bundledJreAsFallback>false</bundledJreAsFallback>
               <minVersion>1.8.0</minVersion>
-              <maxVersion></maxVersion>
               <jdkPreference>preferJre</jdkPreference>
               <runtimeBits>64/32</runtimeBits>
             </jre>
@@ -68,10 +54,8 @@ jobs:
               <productVersion>0.1.0.0</productVersion>
               <txtProductVersion>0.1.0</txtProductVersion>
               <productName>MessageNet SMS Sender</productName>
-              <companyName></companyName>
               <internalName>MessageNetSMS</internalName>
               <originalFilename>MessageNetSMS.exe</originalFilename>
-              <trademarks></trademarks>
               <language>ENGLISH_US</language>
             </versionInfo>
           </launch4jConfig>
