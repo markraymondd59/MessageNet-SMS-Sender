@@ -13,7 +13,7 @@
     <repositories>
         <repository>
             <id>netbeans</id>
-            <url>http://bits.netbeans.org/maven2/</url>
+            <url>https://bits.netbeans.org/maven2/</url>
         </repository>
     </repositories>
   <build>
